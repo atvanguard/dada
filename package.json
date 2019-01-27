@@ -10,8 +10,5 @@
   },
   "devDependencies": {
     "truffle": "^5.0.2"
-  },
-  "dependencies": {
-    "0x.js": "^3.0.3"
   }
 }

@@ -1,3 +1,18 @@
+# Dada
+
+### Development
+Build `/common`
+```shell
+yarn run tsc
+```
+
+Use tsc from `node_modules`
+```shell
+yarn run tsc [command]
+```
+
+### Auto-gen
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
