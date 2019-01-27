@@ -1,0 +1,17 @@
+{
+  "name": "dada",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:atvanguard/dada.git",
+  "author": "atvanguard <93arpit@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "truffle": "truffle"
+  },
+  "devDependencies": {
+    "truffle": "^5.0.2"
+  },
+  "dependencies": {
+    "0x.js": "^3.0.3"
+  }
+}
