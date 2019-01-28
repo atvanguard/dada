@@ -1,14 +1,17 @@
 # Dada
 
 ### Development
-Build `/common`
+**Build `/common` and `/backend`**
 ```shell
 yarn run tsc
+
+(use tsc from node_modules)
+yarn run tsc [command]
 ```
 
-Use tsc from `node_modules`
+**Start server**
 ```shell
-yarn run tsc [command]
+yarn run server
 ```
 
 ### Auto-gen
