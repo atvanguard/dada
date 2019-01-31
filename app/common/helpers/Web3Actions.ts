@@ -17,9 +17,9 @@ import { getRandomFutureDateInSeconds } from '../utils';
 import { NETWORK_CONFIGS, TX_DEFAULTS } from '../configs';
 
 export default class Web3Actions {
-  private web3ProviderEngine: Web3ProviderEngine;
-  private web3Wrapper: Web3Wrapper;
-  private contractWrappers: ContractWrappers;
+  public web3ProviderEngine: Web3ProviderEngine;
+  public web3Wrapper: Web3Wrapper;
+  public contractWrappers: ContractWrappers;
 
   constructor(provider: Provider) {
     this.web3ProviderEngine = new Web3ProviderEngine();
@@ -35,6 +35,7 @@ export default class Web3Actions {
       tokenId: BigNumber,
       makerTokenAmount: string | number | BigNumber,
       makerTokenAddress: string): Promise<SignedOrder> {
+    // intention is to get the address from metamask
     const [makerAddress] = await this.web3Wrapper.getAvailableAddressesAsync();
     // the amount the maker is selling of maker asset
     const makerAssetAmount = Web3Wrapper.toBaseUnitAmount(new BigNumber(makerTokenAmount), DECIMALS);
