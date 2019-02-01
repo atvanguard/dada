@@ -1,4 +1,4 @@
-import * as express from "express";
+import express from "express";
 import relayer from "./relayer";
 import account from "./account";
 
