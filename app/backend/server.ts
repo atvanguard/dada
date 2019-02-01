@@ -1,6 +1,6 @@
 import * as express from "express";
-import relayer from "./relayer";
-import account from "./account";
+import relayer from "./routers/relayerRouter";
+import account from "./routers/accountsRouter";
 
 const app = express();
 app.use('/account', account);
