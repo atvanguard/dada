@@ -3,12 +3,14 @@ import * as _ from 'lodash';
 
 import Db from '../libs/Db';
 import InstaApi from '../libs/InstaApi';
+import Web3Relayer from '../libs/Web3Relayer';
 
 export const router = express.Router()
 export default router;
 
 const db = Db.getInstance();
 const ig = InstaApi.getInstance();
+const web3Relayer = new Web3Relayer();
 
 // This is where you would initially send users to authorize
 router.get('/authorize_user', function(req, res) {
@@ -43,7 +45,7 @@ router.get('/me', async function(req, res) {
     console.log('access_token', access_token)
 
     const media = await ig.getUserMedia(access_token);
-    // console.log('media', media)
+    console.log('media', media)
 
     const _media = await extractImages(media);
     res.send(_media);
@@ -52,13 +54,24 @@ router.get('/me', async function(req, res) {
   }
 })
 
-// link user's ethereum address to insta account
-router.post('/linkAddress', function (req, res) {
-  res.send('hello world')
-})
+router.use(express.json());
 
 // import a creators art - will create NFTs
-router.post('/import', function (req, res) {
+router.post('/import', async function (req, res) {
+  console.log(req.body);
+  try {
+    // get linked ethereum address
+    const creator = '0xabc'; 
+    const ids = req.body.images.map(i => i.id)
+    await web3Relayer.createNfts(creator, ids);
+    res.send('Imported!')
+  } catch(e) {
+    handleError(res, e)
+  }
+})
+
+// link user's ethereum address to insta account
+router.post('/linkAddress', function (req, res) {
   res.send('hello world')
 })
 
