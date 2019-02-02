@@ -37,43 +37,54 @@ router.get('/handleauth', async function(req, res) {
   }
 });
 
-router.get('/me', async function(req, res) {
-  // @todo read user_id from jwt token
-  const { user_id } = req.query;
-  try {
-    const access_token = await db.getAccessToken(user_id)
-    console.log('access_token', access_token)
+router.get('/me', [
+  checkAuth,
+  async (req, res) => {
+    try {
+      const access_token = await db.getAccessToken(req.user_id)
+      console.log('access_token', access_token)
 
-    const media = await ig.getUserMedia(access_token);
-    console.log('media', media)
-
-    const _media = await extractImages(media);
-    res.send(_media);
-  } catch(e) {
-    handleError(res, e)
+      const media = await ig.getUserMedia(access_token);
+      console.log('media', media)
+      res.send(extractImageMetaData(media));
+    } catch(e) {
+      handleError(res, e)
+    }
   }
-})
+])
 
 router.use(express.json());
 
-// import a creators art - will create NFTs
-router.post('/import', async function (req, res) {
-  console.log(req.body);
-  try {
-    // get linked ethereum address
-    const creator = '0xabc'; 
-    const ids = req.body.images.map(i => i.id)
-    await web3Relayer.createNfts(creator, ids);
-    res.send('Imported!')
-  } catch(e) {
-    handleError(res, e)
-  }
-})
-
 // link user's ethereum address to insta account
-router.post('/linkAddress', function (req, res) {
-  res.send('hello world')
-})
+router.post('/linkAddress', [
+  checkAuth,
+  async (req, res) => {
+    const ethAddress = getEthAddressFromSignedMessage(req.body);
+    try {
+      await db.updateEthAddress(req.user_id, ethAddress);
+      res.send('Updated ethAddress');
+    } catch(e) {
+      handleError(res, e)
+    }
+  }
+])
+
+// import a creators art - will create NFTs
+router.post('/import', [
+  checkAuth,
+  async (req, res) => {
+    console.log(req.body);
+    try {
+      // get linked ethereum address
+      const creator = await db.getEthAddress(req.user_id); 
+      const ids = req.body.images.map(i => i.id)
+      await web3Relayer.createNfts(creator, ids);
+      res.send('Imported!')
+    } catch(e) {
+      handleError(res, e)
+    }
+  }
+])
 
 // Helper functions
 function getUserPayload(user: any) {
@@ -85,11 +96,27 @@ function handleError(res, e) {
   res.status(500).send(e)
 }
 
-function extractImages(media: any) {
+function extractImageMetaData(media: any) {
   return media.map(m => {
     return {
-      caption: m.caption,
+      id: m.id,
       url: m.images.standard_resolution.url
     }
   })
+}
+
+function getEthAddressFromSignedMessage(sig) {
+  return '0x60697A2711fCd77bA434faF04588f9b20fc96A3c'
+}
+
+// appends user_id to req object
+function checkAuth(req, res, next) {
+  let jwt = req.headers['authorization'];
+  if (!jwt) {
+    return res.sendStatus(403); // Forbidden (403)
+  }
+  // @todo decode jwt
+  jwt = JSON.parse(jwt);
+  req.user_id = jwt.user_id
+  next();
 }

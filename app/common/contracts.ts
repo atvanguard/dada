@@ -21,3 +21,13 @@ export const dummyERC721TokenContracts: DummyERC721TokenContract[] = [];
 // }
 
 export const contractAddresses = getContractAddressesForNetworkOrThrow(NETWORK_CONFIGS.networkId);
+
+const ArtToken = require('../../build/contracts/ArtToken.json');
+
+export const contracts = {
+  ArtToken: {
+    abi: ArtToken.abi,
+    address: ArtToken.networks[GANACHE_NETWORK_ID].address.toLowerCase()
+  }
+}
+// console.log('in contracts', ArtToken.networks)

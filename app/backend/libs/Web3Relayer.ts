@@ -3,6 +3,7 @@ import {
   RPCSubprovider
 } from '0x.js';
 const Web3 = require('web3');
+import { contracts } from "../../common/contracts";
 
 import Web3Actions from "../../common/helpers/Web3Actions";
 import { BASE_DERIVATION_PATH, MNEMONIC, TX_DEFAULTS, NETWORK_CONFIGS } from '../../common/configs';
@@ -28,17 +29,26 @@ export default class Web3Relayer extends Web3Actions {
       baseDerivationPath: BASE_DERIVATION_PATH,
     });
     super([mnemonicWallet, new RPCSubprovider(NETWORK_CONFIGS.rpcUrl)]);
-    // not sure if RPCSubprovider will work for this one
+    
     // try using the web3Wrapper inherited from super
-    this.web3 = new Web3(new RPCSubprovider(NETWORK_CONFIGS.rpcUrl))
-    this.artContract = new this.web3.eth.Contract([], ART_TOKEN_CONTRACT_ADDRESS)
+    this.web3 = new Web3(new Web3.providers.HttpProvider(NETWORK_CONFIGS.rpcUrl));
+    // console.log('contracts.ArtToken', contracts.ArtToken)
+    this.artContract = new this.web3.eth.Contract(contracts.ArtToken.abi, contracts.ArtToken.address)
   }
 
   async createNfts(to: string, tokenIds: string[]) {
-    const tokenAddress = ART_TOKEN_CONTRACT_ADDRESS.toLowerCase();
-    const receipt = await this.artContract.methods.bulkMint(to, tokenIds);
-    console.dir('createNfts receipt', receipt);
+    const [from] = await this.web3Wrapper.getAvailableAddressesAsync();
+    // console.log(to, tokenIds, this.toHex(tokenIds), from)
+    const receipt = await this.artContract.methods
+        .bulkMint(to, this.toHex(tokenIds))
+        .send({from, gasLimit: TX_DEFAULTS.gas});
+    console.log('createNfts receipt')
     // validate receipt and throw if invalid
+    console.dir(receipt, {depth: null});
+  }
+
+  private toHex(tokenIds: string[]) {
+    return tokenIds.map(t => '0x' + Buffer.from(t).toString('hex'))
   }
 
   async matchOrders(leftSignedOrder: SignedOrder, rightSignedOrder: SignedOrder, matcherAccount: string) {
@@ -47,7 +57,7 @@ export default class Web3Relayer extends Web3Actions {
     }
     const txHash = await this.contractWrappers.exchange.matchOrdersAsync(leftSignedOrder, rightSignedOrder, matcherAccount, {
       gasLimit: TX_DEFAULTS.gas,
-  });
+    });
   }
 
   async sendSignedTransaction() {
