@@ -9,6 +9,13 @@ yarn run tsc
 yarn run tsc [command]
 ```
 
+**MongoDb**
+```shell
+docker run -p 27017:27017 -d mongo
+
+(to connect from CLI)
+mongo
+```
 **Start server**
 ```shell
 yarn run server

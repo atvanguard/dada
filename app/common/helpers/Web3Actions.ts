@@ -14,19 +14,23 @@ import { Provider, Web3Wrapper } from '@0x/web3-wrapper';
 import { DECIMALS, NULL_ADDRESS, ZERO } from '../constants';
 import { contractAddresses, dummyERC721TokenContracts } from '../contracts';
 import { getRandomFutureDateInSeconds } from '../utils';
-import { NETWORK_CONFIGS, TX_DEFAULTS } from '../configs';
+import { NETWORK_CONFIGS } from '../configs';
 
 export default class Web3Actions {
-  private web3ProviderEngine: Web3ProviderEngine;
-  private web3Wrapper: Web3Wrapper;
-  private contractWrappers: ContractWrappers;
+  public web3ProviderEngine: Web3ProviderEngine;
+  public web3Wrapper: Web3Wrapper;
+  public contractWrappers: ContractWrappers;
 
-  constructor(provider: Provider) {
+  constructor(providers) {
+    // https://github.com/0xProject/wiki/blob/master/developer-tools/Web3-Provider-Examples.md
     this.web3ProviderEngine = new Web3ProviderEngine();
-    this.web3ProviderEngine.addProvider(provider);
+    providers.forEach(p => {
+      this.web3ProviderEngine.addProvider(p);  
+    })
     this.web3ProviderEngine.start();
 
     this.web3Wrapper = new Web3Wrapper(this.web3ProviderEngine);
+    // check how this'll work in the UI
     this.contractWrappers = new ContractWrappers(this.web3ProviderEngine, { networkId: NETWORK_CONFIGS.networkId });
   }
 
@@ -35,6 +39,7 @@ export default class Web3Actions {
       tokenId: BigNumber,
       makerTokenAmount: string | number | BigNumber,
       makerTokenAddress: string): Promise<SignedOrder> {
+    // intention is to get the address from metamask
     const [makerAddress] = await this.web3Wrapper.getAvailableAddressesAsync();
     // the amount the maker is selling of maker asset
     const makerAssetAmount = Web3Wrapper.toBaseUnitAmount(new BigNumber(makerTokenAmount), DECIMALS);
