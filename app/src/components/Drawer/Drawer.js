@@ -12,7 +12,7 @@ class Drawer extends React.Component {
   }
 
   componentWillUnmount() {
-    navRoot.removeChild(this.el);
+    setTimeout(() => navRoot.removeChild(this.el), 10000);
   }
 
   render() {

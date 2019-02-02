@@ -1,5 +1,6 @@
 import React from 'react';
 import withStyles from 'react-jss';
+import { Transition, config, animated } from 'react-spring';
 
 import Icon from '../Icon';
 import Drawer from '../Drawer';
@@ -30,20 +31,27 @@ class NavDrawer extends React.Component {
           alt="menu icon"
           clickHandler={this.handleClick}
         />
-        {
-          isOpen && (
-            <Drawer>
-              <div className={classes.drawer}>
-                <Icon
-                  className={classes.icon}
-                  iconSource={close}
-                  alt= "close icon"
-                  clickHandler={this.handleClick}
-                />
-              </div>
-            </Drawer>
-          )
-        }
+          <Transition
+            native
+            items={isOpen}
+            from={{width: '0%'}}
+            enter={{width: '100%'}}
+            leave={{width: '0%'}}
+            config={{...config.default}}
+          >
+            {isOpen => isOpen && (props =>
+              <Drawer>
+                <animated.div className={classes.drawer} style={props}>
+                  <Icon
+                    className={classes.icon}
+                    iconSource={close}
+                    alt= "close icon"
+                    clickHandler={this.handleClick}
+                  />
+                </animated.div>
+              </Drawer>
+            )}
+          </Transition>
       </React.Fragment>
       
     )

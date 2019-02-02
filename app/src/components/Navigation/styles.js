@@ -15,7 +15,7 @@ export const drawer = theme => ({
     top: 0,
     left: 0,
     height: '100%',
-    width: '100%',
+    // width: '100%',
     background: theme.colors.secondaryColor,
     display: 'flex',
     justifyContent: 'center',
