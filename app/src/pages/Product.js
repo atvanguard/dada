@@ -4,7 +4,8 @@ import NavBar from '../components/Navigation';
 
 const Product = () => (
   <NavBar>
-    < NavBar.NavBarRight / >
+    <NavBar.NavBarRight />
+    <NavBar.NavBarLeft />
   </NavBar>
 );
 
