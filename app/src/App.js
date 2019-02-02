@@ -5,7 +5,6 @@ import Product from './pages/Product';
 
 class App extends Component {
   render() {
-    const { classes } = this.props;
     return (
       <Product />
     );
