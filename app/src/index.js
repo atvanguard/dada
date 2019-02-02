@@ -1,14 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { ThemeProvider } from 'react-jss';
 
 import App from './App';
-import theme from './theme';
+import ThemeProvider from './components/ThemeProvider'
 import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(
-  <ThemeProvider theme={theme}>
-    < App />
+  <ThemeProvider>
+    <App />
   </ThemeProvider>
   , 
   document.getElementById('root'));

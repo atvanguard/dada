@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import withStyles from 'react-jss';
+
+import Product from './pages/Product';
+
 class App extends Component {
   render() {
     const { classes } = this.props;
     return (
-      <div className={classes.container}>
-        App
-      </div>
+      <Product />
     );
   }
 }
@@ -14,6 +15,7 @@ class App extends Component {
 const styles = theme => ({
   container: {
     background: theme.colors.bgColor,
+    fontSize: '1.5rem',
   }
 })
 
