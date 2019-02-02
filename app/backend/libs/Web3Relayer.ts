@@ -8,7 +8,6 @@ import { contracts } from "../../common/contracts";
 import Web3Actions from "../../common/helpers/Web3Actions";
 import { BASE_DERIVATION_PATH, MNEMONIC, TX_DEFAULTS, NETWORK_CONFIGS } from '../../common/configs';
 import { MnemonicWalletSubprovider } from '@0x/subproviders';
-import { ART_TOKEN_CONTRACT_ADDRESS } from '../../common/constants';
 
 export default class Web3Relayer extends Web3Actions {
   private static instance: Web3Relayer;
