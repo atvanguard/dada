@@ -30,6 +30,7 @@ class NavDrawer extends React.Component {
           iconSource={menu}
           alt="menu icon"
           clickHandler={this.handleClick}
+          className={classes.menu}
         />
           <Transition
             native
