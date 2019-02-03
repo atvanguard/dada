@@ -6,10 +6,25 @@
   "author": "atvanguard <93arpit@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "truffle": "truffle"
+    "build": "tsc",
+    "server": "node dist/backend/server.js",
+    "server:dev": "node-dev dist/backend/server.js",
+    "truffle": "truffle",
+    "tsc": "tsc"
+  },
+  "dependencies": {
+    "0x.js": "^3.0.3",
+    "express": "^4.16.4",
+    "instagram-node": "^0.5.8",
+    "lodash": "^4.17.11",
+    "mongodb": "^3.1.13",
+    "web3": "^1.0.0-beta.41"
   },
   "devDependencies": {
+    "@types/express": "^4.16.1",
+    "@types/node": "^10.12.21",
     "openzeppelin-solidity": "^2.1.2",
-    "truffle": "^5.0.2"
+    "truffle": "^5.0.2",
+    "typescript": "^3.2.4"
   }
 }

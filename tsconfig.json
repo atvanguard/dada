@@ -67,7 +67,6 @@
   ],
   "include": [
     "common/**/*.ts",
-    "backend/**/*",
-    "../build/contracts/ArtToken.json"
+    "backend/**/*"
   ]
 }
