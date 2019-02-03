@@ -4,6 +4,8 @@
   "private": true,
   "dependencies": {
     "body-scroll-lock": "^2.6.1",
+    "@0x/contract-wrappers": "^5.0.1",
+    "@0x/web3-wrapper": "^3.2.4",
     "react": "^16.7.0",
     "react-dom": "^16.7.0",
     "react-jss": "^8.6.1",
