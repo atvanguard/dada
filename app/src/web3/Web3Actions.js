@@ -31,10 +31,20 @@ class Web3Actions {
     // this.contractWrappers = new ContractWrappers(this.web3ProviderEngine, { networkId: NETWORK_CONFIGS.networkId });
   }
 
-  async approve(erc20TokenAddress) {
+  async approveERC20(erc20TokenAddress) {
     const [ownerAddress] = await this.web3Wrapper.getAvailableAddressesAsync();
     // if required, use setUnlimitedAllowanceAsync
     return this.contractWrappers.erc20Token.setUnlimitedProxyAllowanceAsync(erc20TokenAddress, ownerAddress)
+  }
+
+  // Allow the 0x ERC721 Proxy to move ERC721 tokens on behalf of the creator
+  async setApprovalForArtTokens() {
+    const [ownerAddress] = await this.web3Wrapper.getAvailableAddressesAsync();
+    return this.contractWrappers.erc721Token.setProxyApprovalForAllAsync(
+      contracts.ArtToken.address,
+      ownerAddress,
+      true // isApproved
+    );
   }
 
   async createBid(takerAddress, tokenId, makerTokenAmount, makerTokenAddress) {
