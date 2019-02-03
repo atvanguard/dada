@@ -49,6 +49,11 @@ class NavDrawer extends React.Component {
                     alt= "close icon"
                     clickHandler={this.handleClick}
                   />
+                  <ul>
+                    <li className={classes.navLi}>
+                      <a className={classes.btnLink} href="/account/authorize_user">Sign up with Instagram</a>
+                    </li>
+                  </ul>
                 </animated.div>
               </Drawer>
             )}
