@@ -1,0 +1,8 @@
+users collection
+['id', 'username', 'profile_picture', 'full_name']
+
+tokens collection
+['id', 'access_token']
+
+art collection
+['id', 'url', 'owner' /* ethAddress */ ]

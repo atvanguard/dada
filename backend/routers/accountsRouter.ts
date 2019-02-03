@@ -77,8 +77,8 @@ router.post('/import', [
     try {
       // get linked ethereum address
       const creator = await db.getEthAddress(req.user_id); 
-      const ids = req.body.images.map(i => i.id)
-      await web3Relayer.createNfts(creator, ids);
+      await web3Relayer.createNfts(creator, req.body.images);
+      await db.placeArtUpForSale(creator, req.body.images);
       res.send('Imported!')
     } catch(e) {
       handleError(res, e)

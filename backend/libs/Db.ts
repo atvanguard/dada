@@ -1,5 +1,6 @@
 import * as Bluebird from 'bluebird';
 const mongodb = require('mongodb');
+import {SignedOrder} from '0x.js';
 
 const MongoClient = mongodb.MongoClient;
 Bluebird.promisifyAll(mongodb.Collection.prototype);
@@ -26,11 +27,11 @@ export default class Db {
   async addUser(user: any) {
     const exists = await this.db.collection('users').countAsync({id: user.id});
     if (!exists) {
-      return this.db.collection('users').insertOne(user);
+      return this.db.collection('users').insertOneAsync(user);
     }
   }
 
-  async updateEthAddress(user_id, eth_address) {
+  updateEthAddress(user_id, eth_address) {
     return this.db.collection('users').updateOneAsync(
       {id: user_id}, // query
       {$set: {eth_address}}
@@ -53,5 +54,24 @@ export default class Db {
   async getAccessToken(id): Promise<string> {
     const doc = await this.db.collection('tokens').findOneAsync({id});
     return doc.access_token;
+  }
+
+  async getArtForSale(): Promise<any> {
+    return new Promise((resolve, reject) => {
+      return this.db.collection('art').find({}).toArray((err, result) => {
+        if (err) return reject(err);
+        resolve(result);
+      })
+    })
+  }
+
+  placeArtUpForSale(owner: string, images: {id: string, url: string, caption: string}[]) {
+    return this.db.collection('art').insertManyAsync(images.map(i => {
+      return {id: i.id, url: i.url, caption: i.caption, owner}
+    }))
+  }
+
+  addNewBid(bid: SignedOrder) {
+    return this.db.collection('bids').insertOneAsync(bid)
   }
 }

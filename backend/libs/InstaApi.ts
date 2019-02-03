@@ -2,7 +2,7 @@ const ig = require('instagram-node').instagram();
 
 export default class InstaApi {
   private static instance: InstaApi;
-  private static redirect_uri = 'https://324971b2.ngrok.io/account/handleauth';
+  private static redirect_uri = 'https://cbdfa3a2.ngrok.io/account/handleauth';
 
   static getInstance() {
     if (!InstaApi.instance) {

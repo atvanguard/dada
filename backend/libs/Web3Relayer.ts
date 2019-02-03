@@ -35,11 +35,11 @@ export default class Web3Relayer extends Web3Actions {
     this.artContract = new this.web3.eth.Contract(contracts.ArtToken.abi, contracts.ArtToken.address)
   }
 
-  async createNfts(to: string, tokenIds: string[]) {
+  async createNfts(to: string, images: {id: string}[]) {
     const [from] = await this.web3Wrapper.getAvailableAddressesAsync();
     // console.log(to, tokenIds, this.toHex(tokenIds), from)
     const receipt = await this.artContract.methods
-        .bulkMint(to, this.toHex(tokenIds))
+        .bulkMint(to, images.map(i => this.web3.utils.toHex(i.id)))
         .send({from, gasLimit: TX_DEFAULTS.gas});
     console.log('createNfts receipt')
     // validate receipt and throw if invalid
