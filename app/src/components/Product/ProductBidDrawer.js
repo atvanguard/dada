@@ -5,6 +5,7 @@ import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 
 import Drawer from '../Drawer';
 import ProductBtn from './ProductBtn';
+import Web3Widget from "./Web3Widget";
 
 import {productBidDrawer} from './styles';
 import Icon from '../Icon';
@@ -66,11 +67,11 @@ class ProductBidDrawer extends React.Component {
                 price={price}
                 artist={artist}
               />
+              <Web3Widget />
             </div>
           </animated.div>
         </Drawer>
       ))}
-
       </Transition>
     )
   }
