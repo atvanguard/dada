@@ -1,22 +1,17 @@
+import BN from 'bn.js'
 import {
-    assetDataUtils,
-    BigNumber,
     ContractWrappers,
-    generatePseudoRandomSalt,
-    orderHashUtils,
-    signatureUtils,
 } from '0x.js';
 import { SignerSubprovider, RPCSubprovider, Web3ProviderEngine } from '@0x/subproviders';
 import { Web3Wrapper } from '@0x/web3-wrapper';
+import { getContractAddressesForNetworkOrThrow } from '@0x/contract-addresses';
 // import { contracts } from '../common/contracts';
 // import { DECIMALS, NULL_ADDRESS, ZERO } from '../common/constants';
 // import { getRandomFutureDateInSeconds } from '../common/utils';
 
-class Web3Actions {
-  // public web3ProviderEngine;
-  // public web3Wrapper: Web3Wrapper;
-  // public contractWrappers: ContractWrappers;
+const MAX_256bit = new BN('115792089237316195423570985008687907853269984665640564039457584007913129639935')
 
+class Web3Actions {
   constructor() {
     // https://github.com/0xProject/wiki/blob/master/developer-tools/Web3-Provider-Examples.md
     this.web3ProviderEngine = new Web3ProviderEngine();
@@ -37,11 +32,43 @@ class Web3Actions {
     return window.ethereum.enable();
   }
 
-  // async approveERC20(erc20TokenAddress) {
-  //   const [ownerAddress] = await this.web3Wrapper.getAvailableAddressesAsync();
-  //   // if required, use setUnlimitedAllowanceAsync
-  //   return this.contractWrappers.erc20Token.setUnlimitedProxyAllowanceAsync(erc20TokenAddress, ownerAddress)
-  // }
+  async getAvailableAddress() {
+    const accounts = await this.web3Wrapper.getAvailableAddressesAsync();
+    return accounts[0];
+  }
+
+  async getTokenBalance(tkn) {
+    const address = await this.getAvailableAddress()
+    return this.contractWrappers.erc20Token.getBalanceAsync(
+      this.getTokenAddress(tkn),
+      address
+    )
+  }
+
+  // Allow the 0x ERC20 Proxy to move WETH on behalf of takerAccount
+  async setProxyAllowance(tkn) {
+    const address = await this.getAvailableAddress()
+    const approvalTxHash = await this.contractWrappers.erc20Token.setUnlimitedProxyAllowanceAsync(
+      this.getTokenAddress(tkn),
+      address,
+    );
+    return approvalTxHash
+  }
+
+  async getProxyAllowance(tkn) {
+    const address = await this.getAvailableAddress()
+    const allowance = await this.contractWrappers.erc20Token.getProxyAllowanceAsync(
+      this.getTokenAddress(tkn),
+      address,
+    );
+    if (allowance.eq(MAX_256bit)) return 'INF'
+    return allowance;
+  }
+
+  getTokenAddress(tkn) {
+    if (tkn === 'ZRX') return getContractAddressesForNetworkOrThrow(50).zrxToken;
+    throw new Error('token not supported')
+  }
 
   // // Allow the 0x ERC721 Proxy to move ERC721 tokens on behalf of the creator
   // async setApprovalForArtTokens() {

@@ -6,6 +6,8 @@
     "body-scroll-lock": "^2.6.1",
     "@0x/contract-wrappers": "^5.0.1",
     "@0x/web3-wrapper": "^3.2.4",
+    "bn.js": "^4.11.8",
+    "bootstrap": "^4.2.1",
     "react": "^16.7.0",
     "react-dom": "^16.7.0",
     "react-jss": "^8.6.1",
