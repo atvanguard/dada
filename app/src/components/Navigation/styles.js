@@ -1,4 +1,4 @@
-export const navBar = {
+export const navBar = theme => ({
   nav: {
     position: 'fixed',
     top: 0,
@@ -8,6 +8,7 @@ export const navBar = {
     boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
     paddingLeft: '1.5rem',
     paddingRight: '1.5rem',
+    background: theme.colors.bgColor,
   },
   navContent: {
     maxWidth: '96rem',
@@ -17,7 +18,7 @@ export const navBar = {
     justifyContent: 'space-between',
     alignItems: 'center',
   }
-}
+})
 
 export const drawer = theme => ({
   drawer: {
@@ -38,6 +39,14 @@ export const drawer = theme => ({
   },
   menu: {
     marginRight: '1.2rem',
+  },
+  navLi: {
+    paddingBottom: '1.5rem',
+    borderBottom: '1px solid #fff',
+  },
+  btnLink: {
+    fontSize: '1.8rem',
+    color: '#fff',
   }
 })
 

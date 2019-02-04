@@ -1,12 +1,16 @@
 import React from 'react';
 
 import NavBar from '../components/Navigation';
+import ProductList from '../components/Product/ProductList';
 
 const Product = () => (
-  <NavBar>
-    <NavBar.NavBarRight />
-    <NavBar.NavBarLeft />
-  </NavBar>
+  <React.Fragment>
+    <NavBar>
+      <NavBar.NavBarRight />
+      <NavBar.NavBarLeft />
+    </NavBar>
+    <ProductList />
+  </React.Fragment>
 );
 
 export default Product;
