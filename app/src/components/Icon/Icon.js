@@ -4,16 +4,13 @@ import withStyles from 'react-jss';
 import styles from './styles';
 
 const Icon = props => {
-  const { iconSource, clickHandler, classes, alt, className } = props;
+  const { clickHandler, classes, className, children } = props;
 
   return (
     <span
       className={`${classes.icon} ${className ? className: ''}`}
       onClick={clickHandler}>
-      <img 
-        className={classes.img}
-        src={iconSource} alt={alt}
-      />
+        { children }
     </span>
   )
 }

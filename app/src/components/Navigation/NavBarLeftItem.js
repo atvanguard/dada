@@ -3,9 +3,9 @@ import withStyles from 'react-jss';
 
 import Icon from '../Icon';
 
-import hammer from '../../assets/img/hammer.svg';
-import heart from '../../assets/img/heart.svg';
-import search from '../../assets/img/search.svg';
+import { ReactComponent as Hammer} from '../../assets/img/hammer.svg';
+import { ReactComponent as Heart} from '../../assets/img/heart.svg'
+import { ReactComponent as Search} from '../../assets/img/search.svg';
 
 import { navBarLeft } from './styles';
 
@@ -14,23 +14,24 @@ const NavBarLeftItem = props => {
   return (
     <div className={classes.navBarLeft}>
       <Icon 
-        iconSource={search}
-        alt="search icon"
         className={classes.icon}
-      />
+      >
+        <Search />
+      </Icon>
       <Icon 
-        iconSource={heart}
-        alt="heart icon"
         className={classes.icon}
-      />
+      >
+        <Heart />
+      </Icon>
       <Icon 
-        iconSource={hammer}
-        alt="hammer icon"
         className={classes.icon}
-      />
+      >
+        <Hammer />
+      </Icon>
     </div>
   )
 }
+
 NavBarLeftItem.displayName = "NavBarLeftItem";
 
 export default withStyles(navBarLeft)(NavBarLeftItem);

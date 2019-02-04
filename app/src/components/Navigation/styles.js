@@ -9,6 +9,7 @@ export const navBar = theme => ({
     paddingLeft: '1.5rem',
     paddingRight: '1.5rem',
     background: theme.colors.bgColor,
+    zIndex: 1,
   },
   navContent: {
     maxWidth: '96rem',
@@ -36,6 +37,9 @@ export const drawer = theme => ({
     top: '2rem',
     right: '2rem',
     transition: 'all 300ms',
+    '& svg': {
+      fill: '#fff',
+    }
   },
   menu: {
     marginRight: '1.2rem',

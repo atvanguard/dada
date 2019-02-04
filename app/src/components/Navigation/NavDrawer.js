@@ -6,8 +6,8 @@ import Icon from '../Icon';
 import Drawer from '../Drawer';
 
 import { drawer } from './styles';
-import menu from '../../assets/img/menu.svg';
-import close from '../../assets/img/close.svg';
+import { ReactComponent as Menu} from '../../assets/img/menu.svg';
+import { ReactComponent as Close} from '../../assets/img/close.svg';
 
 class NavDrawer extends React.Component {
 
@@ -27,11 +27,11 @@ class NavDrawer extends React.Component {
     return (
       <React.Fragment>
         <Icon 
-          iconSource={menu}
-          alt="menu icon"
           clickHandler={this.handleClick}
           className={classes.menu}
-        />
+        >
+          <Menu />
+        </Icon>
           <Transition
             native
             items={isOpen}
@@ -45,10 +45,10 @@ class NavDrawer extends React.Component {
                 <animated.div className={classes.drawer} style={props}>
                   <Icon
                     className={classes.icon}
-                    iconSource={close}
-                    alt= "close icon"
                     clickHandler={this.handleClick}
-                  />
+                  >
+                    <Close />
+                  </Icon>
                   <ul>
                     <li className={classes.navLi}>
                       <a className={classes.btnLink} href="/account/authorize_user">Sign up with Instagram</a>

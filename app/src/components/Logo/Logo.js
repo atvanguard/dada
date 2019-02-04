@@ -3,7 +3,7 @@ import withStyles from 'react-jss';
 
 import Icon from '../Icon';
 
-import hand from '../../assets/img/hand.svg'
+import { ReactComponent as Hand } from '../../assets/img/hand.svg'
 import styles from './styles';
 
 const Logo = props => {
@@ -13,10 +13,10 @@ const Logo = props => {
     <div className={classes.logo}>
       <a href="/" className={classes.logoLink}>
         <Icon 
-          iconSource={hand}
-          alt="Logo icon"
           className={classes.icon}
-        />
+        >
+          <Hand />
+        </Icon>
         <span>Dada</span>
       </a>
     </div>
