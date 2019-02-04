@@ -9,6 +9,7 @@ export const navBar = theme => ({
     paddingLeft: '1.5rem',
     paddingRight: '1.5rem',
     background: theme.colors.bgColor,
+    zIndex: 1,
   },
   navContent: {
     maxWidth: '96rem',
