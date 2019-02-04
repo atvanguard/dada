@@ -36,6 +36,9 @@ export const drawer = theme => ({
     top: '2rem',
     right: '2rem',
     transition: 'all 300ms',
+    '& svg': {
+      fill: '#fff',
+    }
   },
   menu: {
     marginRight: '1.2rem',

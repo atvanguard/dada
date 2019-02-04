@@ -1,9 +1,6 @@
-<svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-<rect width="26" height="26" fill="url(#pattern0)"/>
-<defs>
-<pattern id="pattern0" patternContentUnits="objectBoundingBox" width="1" height="1">
-<use xlink:href="#image0" transform="scale(0.0333333)"/>
-</pattern>
-<image id="image0" width="30" height="30" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAQAAACROWYpAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAAmJLR0QAAKqNIzIAAAAJcEhZcwAADdcAAA3XAUIom3gAAAAHdElNRQfjARwAGymQL1HtAAABx0lEQVQ4y6XUsUtVURwH8M97mPIqSAjKfFbOETakm9kQklNgi9UURG1F1BI1hn+Akw5CEFhTWSER1iKU4ZZFWaDZUqK2hK8Xoe+eBtPrs/eeV/vd6Xx/fM6595zDTSmulGad2mTVyZsxacgTcxJUh3FBEMx7Z0peECzqs68y3OmhIPLIWbtW08Nu+SzIOVee7vdW8FpLiV61q3Ii3eVWHRf0qy47eZNpwfVSrQeC/g32o9GcJe3r45OC0QqrrtRxBROqig/njUhzksNwV3BpbdAiGExEaVQwtjboFnQlxIyKNKwM0toEzxLjp1KOxbjBdz8S4ylkY7zXbGLKDPFVTcvLbAJvRz7GM+o3gbPEb5o2KeNQYnwUE/HwguBmQpr2TU5NHOyxaCrB5YTTgvvFUa/gSgK6zSeRI8VhnQULmjbEPYKBf+MzItMOVqSXBdNqS7VuC2a1loFVegTBSLk7cc2SgjsOrMtTOn0UfDEiGC7HT/ggKHjphi6tOpzX66sgMqBWxnAlXuWiMdHf3+/yk3NvdTOX+fMVnioxRb029bJ+mvfeK7/X9DIea/fCKb82PJ0SVWNIMGLHVvB/8+VvH0xtTcsYsPsPFU6SjrpXAtsAAAAldEVYdGRhdGU6Y3JlYXRlADIwMTktMDEtMjdUMjM6Mjc6NDErMDE6MDBWoJ0VAAAAJXRFWHRkYXRlOm1vZGlmeQAyMDE5LTAxLTI3VDIzOjI3OjQxKzAxOjAwJ/0lqQAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAAASUVORK5CYII="/>
-</defs>
+<?xml version='1.0' encoding='utf-8'?>
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 129 129" xmlns:xlink="http://www.w3.org/1999/xlink" enable-background="new 0 0 129 129">
+  <g>
+    <path d="M51.6,96.7c11,0,21-3.9,28.8-10.5l35,35c0.8,0.8,1.8,1.2,2.9,1.2s2.1-0.4,2.9-1.2c1.6-1.6,1.6-4.2,0-5.8l-35-35   c6.5-7.8,10.5-17.9,10.5-28.8c0-24.9-20.2-45.1-45.1-45.1C26.8,6.5,6.5,26.8,6.5,51.6C6.5,76.5,26.8,96.7,51.6,96.7z M51.6,14.7   c20.4,0,36.9,16.6,36.9,36.9C88.5,72,72,88.5,51.6,88.5c-20.4,0-36.9-16.6-36.9-36.9C14.7,31.3,31.3,14.7,51.6,14.7z"/>
+  </g>
 </svg>
