@@ -1,13 +1,18 @@
 import BN from 'bn.js'
 import {
-    ContractWrappers,
+  assetDataUtils,
+  BigNumber,
+  ContractWrappers,
+  generatePseudoRandomSalt,
+  orderHashUtils,
+  signatureUtils,
 } from '0x.js';
-import { SignerSubprovider, RPCSubprovider, Web3ProviderEngine } from '@0x/subproviders';
+import { RPCSubprovider, MetamaskSubprovider, Web3ProviderEngine } from '@0x/subproviders';
 import { Web3Wrapper } from '@0x/web3-wrapper';
 import { getContractAddressesForNetworkOrThrow } from '@0x/contract-addresses';
-// import { contracts } from '../common/contracts';
-// import { DECIMALS, NULL_ADDRESS, ZERO } from '../common/constants';
-// import { getRandomFutureDateInSeconds } from '../common/utils';
+import { contracts } from '../common/contracts';
+import { DECIMALS, NULL_ADDRESS, ZERO } from '../common/constants';
+import { getRandomFutureDateInSeconds } from '../common/utils';
 
 const MAX_256bit = new BN('115792089237316195423570985008687907853269984665640564039457584007913129639935')
 
@@ -18,7 +23,8 @@ class Web3Actions {
     // Compose our Providers, order matters
     // Use the SignerSubprovider to wrap the browser extension wallet
     // All account based and signing requests will go through the SignerSubprovider
-    this.web3ProviderEngine.addProvider(new SignerSubprovider(window.web3.currentProvider));
+    // this.web3ProviderEngine.addProvider(new SignerSubprovider(window.web3.currentProvider));
+    this.web3ProviderEngine.addProvider(new MetamaskSubprovider(window.web3.currentProvider));
     // Use an RPC provider to route all other requests
     this.web3ProviderEngine.addProvider(new RPCSubprovider('http://localhost:8545'));
     this.web3ProviderEngine.start();
@@ -80,41 +86,43 @@ class Web3Actions {
   //   );
   // }
 
-  // async createBid(takerAddress, tokenId, makerTokenAmount, makerTokenAddress) {
-  //   // intention is to get the address from metamask
-  //   const [makerAddress] = await this.web3Wrapper.getAvailableAddressesAsync();
-  //   // the amount the maker is selling of maker asset
-  //   const makerAssetAmount = Web3Wrapper.toBaseUnitAmount(new BigNumber(makerTokenAmount), DECIMALS);
-  //   // the amount the maker wants of taker asset
-  //   const takerAssetAmount = new BigNumber(1);
+  async createBid(takerAddress, tokenId, makerTokenAmount, makerToken) {
+    const makerAddress = await this.getAvailableAddress()
+    const makerTokenAddress = this.getTokenAddress(makerToken);
+    // the amount the maker is selling of maker asset
+    const makerAssetAmount = Web3Wrapper.toBaseUnitAmount(new BigNumber(makerTokenAmount), DECIMALS);
+    // the amount the maker wants of taker asset
+    const takerAssetAmount = new BigNumber(1);
 
-  //   // 0x v2 uses hex encoded asset data strings to encode all the information needed to identify an asset
-  //   const makerAssetData = assetDataUtils.encodeERC20AssetData(makerTokenAddress);
-  //   const takerAssetData = assetDataUtils.encodeERC721AssetData(contracts.ArtToken.address, tokenId);
+    // 0x v2 uses hex encoded asset data strings to encode all the information needed to identify an asset
+    const makerAssetData = assetDataUtils.encodeERC20AssetData(makerTokenAddress);
+    const takerAssetData = assetDataUtils.encodeERC721AssetData(contracts.ArtToken.address, tokenId);
 
-  //   // Create the order
-  //   const order = {
-  //     exchangeAddress: contracts.Exchange.address,
-  //     makerAddress,
-  //     takerAddress,
-  //     senderAddress: NULL_ADDRESS,
-  //     feeRecipientAddress: NULL_ADDRESS,
-  //     expirationTimeSeconds: getRandomFutureDateInSeconds(),
-  //     salt: generatePseudoRandomSalt(),
-  //     makerAssetAmount,
-  //     takerAssetAmount,
-  //     makerAssetData,
-  //     takerAssetData,
-  //     makerFee: ZERO,
-  //     takerFee: ZERO,
-  //   };
+    // Create the order
+    const order = {
+      exchangeAddress: getContractAddressesForNetworkOrThrow(50).exchange,
+      makerAddress,
+      takerAddress: takerAddress.toLowerCase(),
+      senderAddress: NULL_ADDRESS,
+      feeRecipientAddress: NULL_ADDRESS,
+      expirationTimeSeconds: getRandomFutureDateInSeconds(),
+      salt: generatePseudoRandomSalt(),
+      makerAssetAmount,
+      takerAssetAmount,
+      makerAssetData,
+      takerAssetData,
+      makerFee: ZERO,
+      takerFee: ZERO,
+    };
+    console.log('order for signing', order)
 
-  //   // Generate the order hash and sign it
-  //   const orderHashHex = orderHashUtils.getOrderHashHex(order);
-  //   const signature = await signatureUtils.ecSignHashAsync(this.web3ProviderEngine, orderHashHex, makerAddress);
-  //   const signedOrder = { ...order, signature };
-  //   return signedOrder;
-  // }
+    // Generate the order hash and sign it
+    // const orderHashHex = orderHashUtils.getOrderHashHex(order);
+    const signature = await signatureUtils.ecSignTypedDataOrderAsync(this.web3ProviderEngine, order, makerAddress);
+    // const signature = await signatureUtils.ecSignHashAsync(this.web3ProviderEngine, orderHashHex, makerAddress);
+    const signedOrder = { ...order, signature };
+    return signedOrder;
+  }
 
   // // intended to make it work like meta-tx
   // async fulfillBid(signedOrder, taker, takerAssetAmount) {
