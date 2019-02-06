@@ -5,11 +5,15 @@ import { productBtn } from './styles';
 
 const ProductBtn = props => {
   const { title, artist, price, classes} = props;
-
+  let caption = title;
+  if (artist) caption += ` by ${artist}`
+  
   return(
     <button className={classes.productBtn}>
-      <span className={classes.desc}>{ title } by {artist}</span>
-      <span className={classes.price}>{price}eth</span>
+        <span className={classes.desc}>{ caption }</span>
+        {price &&
+          <span className={classes.price}>{price}eth</span>
+        }
     </button>
   )
 }

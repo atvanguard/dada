@@ -11,7 +11,8 @@ const initialState = {
     success: false,
     request: false,
     error: false,
-  }
+  },
+  importArt: {}
 };
 
 const store = createStore(

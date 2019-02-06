@@ -6,14 +6,15 @@
   "author": "atvanguard <93arpit@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "build": "tsc",
-    "server": "node dist/backend/server.js",
-    "server:dev": "node-dev dist/backend/server.js",
+    "build": "rm -rf dist && cd app && yarn build && cd .. && tsc && rm -rf dist/backend/build && cp -r app/build dist/backend",
+    "start": "node dist/backend/server.js",
+    "start:dev": "node-dev dist/backend/server.js",
     "truffle": "truffle",
     "tsc": "tsc"
   },
   "dependencies": {
     "0x.js": "^3.0.3",
+    "cookie-parser": "^1.4.3",
     "express": "^4.16.4",
     "instagram-node": "^0.5.8",
     "lodash": "^4.17.11",

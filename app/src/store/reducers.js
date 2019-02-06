@@ -1,16 +1,6 @@
-import { LIST } from './constants';
+import { LIST } from './actionTypes';
 
-const initialState = {
-  products: {
-    data: [],
-    loading: false,
-    success: false,
-    request: false,
-    error: false,
-  }
-};
-
-const rootReducer = (state = initialState, action) => {
+const rootReducer = (state, action) => {
   switch(action.type) {
     case LIST.LIST_REQUEST:
       return {
@@ -20,7 +10,28 @@ const rootReducer = (state = initialState, action) => {
           loading: true,
         }
       }
+    case LIST.IMPORT_ART:
+      return {
+        ...state,
+        importArt: {loading: true}
+      }
+    case LIST.IMPORT_ART_SUCCESS:
+      return {
+        ...state,
+        importArt: {success: true, loading: false}
+      }
     case LIST.LIST_SUCCESS:
+      return {
+        ...state,
+        products: {
+          ...state.products,
+          data: action.data,
+          loading: false,
+          error: false,
+          success: true,
+      }
+    }
+    case LIST.CREATOR_ART_LIST_SUCCESS:
       return {
         ...state,
         products: {

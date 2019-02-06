@@ -1,5 +1,6 @@
 import * as express from "express";
 import * as _ from 'lodash';
+const cookieParser = require('cookie-parser')
 
 import Db from '../libs/Db';
 import InstaApi from '../libs/InstaApi';
@@ -30,13 +31,15 @@ router.get('/handleauth', async function(req, res) {
     // @todo
     // create and send jwt token, which will go in user's local storage
     // redirect to homepage /me
-
-    res.send('Sign up successful')
+    res.cookie('user_id', user_id)
+    res.redirect('/')
+    // res.send('Sign up successful')
   } catch(e) {
     handleError(res, e)
   }
 });
 
+router.use(cookieParser())
 router.get('/me', [
   checkAuth,
   async (req, res) => {
@@ -73,18 +76,38 @@ router.post('/linkAddress', [
 router.post('/import', [
   checkAuth,
   async (req, res) => {
-    console.log(req.body);
     try {
+      const access_token = await db.getAccessToken(req.user_id)
+      console.log('access_token', access_token)
+
+      let media = await ig.getUserMedia(access_token);
       // get linked ethereum address
-      const creator = await db.getEthAddress(req.user_id); 
-      await web3Relayer.createNfts(creator, req.body.images);
-      await db.placeArtUpForSale(creator, req.body.images);
-      res.send('Imported!')
+      const creator = await db.getEthAddress(req.user_id);
+      const _media = extractImageMetaData(media, creator);
+      // await web3Relayer.createNfts(creator, req.body.images);
+      await db.placeArtUpForSale(_media);
+      res.send('Imported')
     } catch(e) {
       handleError(res, e)
     }
   }
 ])
+
+// router.post('/import', [
+//   checkAuth,
+//   async (req, res) => {
+//     console.log(req.body);
+//     try {
+//       // get linked ethereum address
+//       const creator = await db.getEthAddress(req.user_id); 
+//       await web3Relayer.createNfts(creator, req.body.images);
+//       await db.placeArtUpForSale(creator, req.body.images);
+//       res.send('Imported!')
+//     } catch(e) {
+//       handleError(res, e)
+//     }
+//   }
+// ])
 
 // Helper functions
 function getUserPayload(user: any) {
@@ -96,11 +119,14 @@ function handleError(res, e) {
   res.status(500).send(e)
 }
 
-function extractImageMetaData(media: any) {
+function extractImageMetaData(media: any, ethAddress = '') {
   return media.map(m => {
     return {
       id: m.id,
-      url: m.images.standard_resolution.url
+      url: m.images.standard_resolution.url,
+      caption: _.get(m, 'caption.text', 'No Title'),
+      owner: _.get(m, 'user.full_name', ''),
+      ethAddress
     }
   })
 }
@@ -111,12 +137,18 @@ function getEthAddressFromSignedMessage(sig) {
 
 // appends user_id to req object
 function checkAuth(req, res, next) {
-  let jwt = req.headers['authorization'];
-  if (!jwt) {
-    return res.sendStatus(403); // Forbidden (403)
+  console.log('cookie', req.cookies)
+  // let jwt = req.headers['authorization'];
+  // if (!jwt) {
+  //   return res.sendStatus(403); // Forbidden (403)
+  // }
+  // // @todo decode jwt
+  // jwt = JSON.parse(jwt);
+  if(!req.cookies || !req.cookies.user_id) {
+    req.cookies = {user_id: '10732810682'}
+    // return res.send('Sign up with instagram first');
+    // return res.redirect(ig.getAuthorizationUrl());
   }
-  // @todo decode jwt
-  jwt = JSON.parse(jwt);
-  req.user_id = jwt.user_id
+  req.user_id = req.cookies.user_id
   next();
 }

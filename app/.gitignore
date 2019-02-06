@@ -24,3 +24,4 @@ yarn-error.log*
 
 # remove
 yarn.lock
+src/ArtToken.json
