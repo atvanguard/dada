@@ -1,5 +1,6 @@
 import * as express from "express";
 import * as _ from 'lodash';
+const cookieParser = require('cookie-parser')
 
 import Db from '../libs/Db';
 import InstaApi from '../libs/InstaApi';
@@ -30,13 +31,15 @@ router.get('/handleauth', async function(req, res) {
     // @todo
     // create and send jwt token, which will go in user's local storage
     // redirect to homepage /me
-
-    res.send('Sign up successful')
+    res.cookie('user_id', user_id)
+    res.redirect('/')
+    // res.send('Sign up successful')
   } catch(e) {
     handleError(res, e)
   }
 });
 
+router.use(cookieParser())
 router.get('/me', [
   checkAuth,
   async (req, res) => {
@@ -111,12 +114,17 @@ function getEthAddressFromSignedMessage(sig) {
 
 // appends user_id to req object
 function checkAuth(req, res, next) {
-  let jwt = req.headers['authorization'];
-  if (!jwt) {
-    return res.sendStatus(403); // Forbidden (403)
+  console.log('cookie', req.cookies)
+  // let jwt = req.headers['authorization'];
+  // if (!jwt) {
+  //   return res.sendStatus(403); // Forbidden (403)
+  // }
+  // // @todo decode jwt
+  // jwt = JSON.parse(jwt);
+  if(!req.cookies || !req.cookies.user_id) {
+    return res.send('Sign up with instagram first');
+    // return res.redirect(ig.getAuthorizationUrl());
   }
-  // @todo decode jwt
-  jwt = JSON.parse(jwt);
-  req.user_id = jwt.user_id
+  req.user_id = req.cookies.user_id
   next();
 }

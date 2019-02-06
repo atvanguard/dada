@@ -31,6 +31,17 @@ const rootReducer = (state = initialState, action) => {
           success: true,
       }
     }
+    case LIST.CREATOR_ART_LIST_SUCCESS:
+      return {
+        ...state,
+        products: {
+          ...state.products,
+          data: action.data,
+          loading: false,
+          error: false,
+          success: true,
+      }
+    }
     case LIST.LIST_ERROR: 
       return {
         ...state,
