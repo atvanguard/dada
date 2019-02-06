@@ -4,7 +4,7 @@ export const ART_LIST = [
     "url": "https://news.artnet.com/app/news-upload/2015/08/Mus-e-Karl-Waldmann-Museum.jpg",
     "owner": "Artist",
     "caption": "The Face",
-    "price": 20
+    "price": 20,
   },
   {
     "id": 2,
@@ -71,11 +71,15 @@ export const CREATOR_ART_LIST = [
   {
       "id": "1969826650673688744_10732810682",
       "url": "https://scontent.cdninstagram.com/vp/c658c2e7748c96b23d34d32987193e40/5CDF22A3/t51.2885-15/sh0.08/e35/s640x640/50570935_808033376212893_2481180194809987956_n.jpg?_nc_ht=scontent.cdninstagram.com",
-      "caption": "snow castle"
+      "caption": "No Title",
+      "owner": "Arpit",
+      "ethAddress": ""
   },
   {
       "id": "1969648271227895297_10732810682",
       "url": "https://scontent.cdninstagram.com/vp/13b6e508abaf0e332a123966e6005b43/5CE45F1E/t51.2885-15/sh0.08/e35/s640x640/49503556_2088481384565993_4039672808692073706_n.jpg?_nc_ht=scontent.cdninstagram.com",
-      "caption": "snow cycle"
+      "caption": "Snow cycle",
+      "owner": "Arpit",
+      "ethAddress": ""
   }
 ]

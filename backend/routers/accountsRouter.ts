@@ -76,18 +76,38 @@ router.post('/linkAddress', [
 router.post('/import', [
   checkAuth,
   async (req, res) => {
-    console.log(req.body);
     try {
+      const access_token = await db.getAccessToken(req.user_id)
+      console.log('access_token', access_token)
+
+      let media = await ig.getUserMedia(access_token);
       // get linked ethereum address
-      const creator = await db.getEthAddress(req.user_id); 
-      await web3Relayer.createNfts(creator, req.body.images);
-      await db.placeArtUpForSale(creator, req.body.images);
-      res.send('Imported!')
+      const creator = await db.getEthAddress(req.user_id);
+      const _media = extractImageMetaData(media, creator);
+      // await web3Relayer.createNfts(creator, req.body.images);
+      await db.placeArtUpForSale(_media);
+      res.send('Imported')
     } catch(e) {
       handleError(res, e)
     }
   }
 ])
+
+// router.post('/import', [
+//   checkAuth,
+//   async (req, res) => {
+//     console.log(req.body);
+//     try {
+//       // get linked ethereum address
+//       const creator = await db.getEthAddress(req.user_id); 
+//       await web3Relayer.createNfts(creator, req.body.images);
+//       await db.placeArtUpForSale(creator, req.body.images);
+//       res.send('Imported!')
+//     } catch(e) {
+//       handleError(res, e)
+//     }
+//   }
+// ])
 
 // Helper functions
 function getUserPayload(user: any) {
@@ -99,11 +119,14 @@ function handleError(res, e) {
   res.status(500).send(e)
 }
 
-function extractImageMetaData(media: any) {
+function extractImageMetaData(media: any, ethAddress = '') {
   return media.map(m => {
     return {
       id: m.id,
-      url: m.images.standard_resolution.url
+      url: m.images.standard_resolution.url,
+      caption: _.get(m, 'caption.text', 'No Title'),
+      owner: _.get(m, 'user.full_name', ''),
+      ethAddress
     }
   })
 }
@@ -122,7 +145,8 @@ function checkAuth(req, res, next) {
   // // @todo decode jwt
   // jwt = JSON.parse(jwt);
   if(!req.cookies || !req.cookies.user_id) {
-    return res.send('Sign up with instagram first');
+    req.cookies = {user_id: '10732810682'}
+    // return res.send('Sign up with instagram first');
     // return res.redirect(ig.getAuthorizationUrl());
   }
   req.user_id = req.cookies.user_id

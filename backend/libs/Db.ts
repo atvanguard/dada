@@ -65,10 +65,8 @@ export default class Db {
     })
   }
 
-  placeArtUpForSale(owner: string, images: {id: string, url: string, caption: string}[]) {
-    return this.db.collection('art').insertManyAsync(images.map(i => {
-      return {id: i.id, url: i.url, caption: i.caption, owner}
-    }))
+  placeArtUpForSale(images: any[]) {
+    return this.db.collection('art').insertManyAsync(images);
   }
 
   addNewBid(bid: SignedOrder) {

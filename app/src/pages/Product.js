@@ -2,7 +2,7 @@ import React from 'react';
 
 import NavBar from '../components/Navigation';
 import ProductList from '../components/Product/ProductList';
-import CreatorsProductList from '../components/Product/CreatorsProductList';
+import CreatorsPage from '../components/Product/CreatorsPage';
 import {BrowserRouter as Router, Link, Route} from 'react-router-dom';
 
 const Product = () => (
@@ -10,13 +10,12 @@ const Product = () => (
     <React.Fragment>
       <NavBar>
         <NavBar.NavBarRight />
-        <a href="/">Buy Art</a>
-        <Link to={`/me`}>My Art</Link>
-        {/* <a href="/me">My Art</a> */}
+        <Link to='/'>Buy Art</Link>
+        <Link to='/me'>My Art</Link>
         <NavBar.NavBarLeft />
       </NavBar>
       <Route exact={true} path="/" component={ProductList} />
-      <Route path="/me" component={CreatorsProductList} />
+      <Route path="/me" component={CreatorsPage} />
     </React.Fragment>
   </Router>
 );
