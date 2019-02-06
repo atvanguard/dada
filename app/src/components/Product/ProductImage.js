@@ -22,7 +22,7 @@ class ProductImage extends React.Component {
   }
 
   render() {
-    const { imgSource, alt, classes, title, price, artist } = this.props;
+    const { imgSource, alt, classes, caption, price, owner } = this.props;
     const { isBidding } = this.state;
     return (
       <div className={classes.container}>
@@ -38,17 +38,17 @@ class ProductImage extends React.Component {
           />
         </div>
         <ProductBtn 
-          title={title}
+          title={caption}
           price={price}
-          artist={artist}
+          artist={owner}
         />
         {!isBidding ? null : (
           <ProductBidDrawer 
             isShowing={isBidding}
             imgSource={imgSource}
-            title={title}
+            title={caption}
             price={price}
-            artist={artist}
+            artist={owner}
             alt={alt}
             handleClick={this.handleClick}
           />

@@ -34,62 +34,68 @@ export default class Web3Actions {
     this.contractWrappers = new ContractWrappers(this.web3ProviderEngine, { networkId: NETWORK_CONFIGS.networkId });
   }
 
-  async createBid(
-      takerAddress: string,
-      tokenId: BigNumber,
-      makerTokenAmount: string | number | BigNumber,
-      makerTokenAddress: string): Promise<SignedOrder> {
-    // intention is to get the address from metamask
-    const [makerAddress] = await this.web3Wrapper.getAvailableAddressesAsync();
-    // the amount the maker is selling of maker asset
-    const makerAssetAmount = Web3Wrapper.toBaseUnitAmount(new BigNumber(makerTokenAmount), DECIMALS);
-    // the amount the maker wants of taker asset
-    const takerAssetAmount = new BigNumber(1);
+  // async createBid(
+  //     takerAddress: string,
+  //     tokenId: BigNumber,
+  //     makerTokenAmount: string | number | BigNumber,
+  //     makerTokenAddress: string): Promise<SignedOrder> {
+  //   // intention is to get the address from metamask
+  //   const [makerAddress] = await this.web3Wrapper.getAvailableAddressesAsync();
+  //   // the amount the maker is selling of maker asset
+  //   const makerAssetAmount = Web3Wrapper.toBaseUnitAmount(new BigNumber(makerTokenAmount), DECIMALS);
+  //   // the amount the maker wants of taker asset
+  //   const takerAssetAmount = new BigNumber(1);
 
-    // 0x v2 uses hex encoded asset data strings to encode all the information needed to identify an asset
-    const makerAssetData = assetDataUtils.encodeERC20AssetData(makerTokenAddress);
-    // replace the dummy with const artGalleryContract contract address
-    const artGalleryContract = dummyERC721TokenContracts[0];
-    const takerAssetData = assetDataUtils.encodeERC721AssetData(artGalleryContract.address, tokenId);
+  //   // 0x v2 uses hex encoded asset data strings to encode all the information needed to identify an asset
+  //   const makerAssetData = assetDataUtils.encodeERC20AssetData(makerTokenAddress);
+  //   // replace the dummy with const artGalleryContract contract address
+  //   const artGalleryContract = dummyERC721TokenContracts[0];
+  //   const takerAssetData = assetDataUtils.encodeERC721AssetData(artGalleryContract.address, tokenId);
 
-    // Create the order
-    const order: Order = {
-      exchangeAddress: contractAddresses.exchange,
-      makerAddress,
-      takerAddress,
-      senderAddress: NULL_ADDRESS,
-      feeRecipientAddress: NULL_ADDRESS,
-      expirationTimeSeconds: getRandomFutureDateInSeconds(),
-      salt: generatePseudoRandomSalt(),
-      makerAssetAmount,
-      takerAssetAmount,
-      makerAssetData,
-      takerAssetData,
-      makerFee: ZERO,
-      takerFee: ZERO,
-    };
+  //   // Create the order
+  //   const order: Order = {
+  //     exchangeAddress: contractAddresses.exchange,
+  //     makerAddress,
+  //     takerAddress,
+  //     senderAddress: NULL_ADDRESS,
+  //     feeRecipientAddress: NULL_ADDRESS,
+  //     expirationTimeSeconds: getRandomFutureDateInSeconds(),
+  //     salt: generatePseudoRandomSalt(),
+  //     makerAssetAmount,
+  //     takerAssetAmount,
+  //     makerAssetData,
+  //     takerAssetData,
+  //     makerFee: ZERO,
+  //     takerFee: ZERO,
+  //   };
 
-    // Generate the order hash and sign it
-    const orderHashHex = orderHashUtils.getOrderHashHex(order);
-    const signature = await signatureUtils.ecSignHashAsync(this.web3ProviderEngine, orderHashHex, makerAddress);
-    const signedOrder = { ...order, signature };
-    return signedOrder;
-  }
+  //   // Generate the order hash and sign it
+  //   const orderHashHex = orderHashUtils.getOrderHashHex(order);
+  //   const signature = await signatureUtils.ecSignHashAsync(this.web3ProviderEngine, orderHashHex, makerAddress);
+  //   const signedOrder = { ...order, signature };
+  //   return signedOrder;
+  // }
 
-  // see execute_transactions.ts in 0x-starter-project scenarios
-  async fulfillBid(signedOrder: SignedOrder, taker: string, takerAssetAmount: BigNumber): Promise<string> {
-    // The transaction encoder provides helpers in encoding 0x Exchange transactions to allow
-    // a third party to submit the transaction. This operates in the context of the signer (taker)
-    // rather then the context of the submitter (sender)
-    const transactionEncoder = await this.contractWrappers.exchange.transactionEncoderAsync();
-    // This is an ABI encoded function call that the taker wishes to perform
-    // in this scenario it is a fillOrder
-    const fillData = transactionEncoder.fillOrderTx(signedOrder, takerAssetAmount);
-    // Generate a random salt to mitigate replay attacks
-    const takerTransactionSalt = generatePseudoRandomSalt();
-    // The taker signs the operation data (fillOrder) with the salt
-    const executeTransactionHex = transactionEncoder.getTransactionHex(fillData, takerTransactionSalt, taker);
-    const takerSignatureHex = await signatureUtils.ecSignHashAsync(this.web3ProviderEngine, executeTransactionHex, taker);
-    return takerSignatureHex;
-  }
+  // // see execute_transactions.ts in 0x-starter-project scenarios
+  // async fulfillBid(signedOrder: SignedOrder, taker: string, takerAssetAmount: BigNumber): Promise<string> {
+  //   // The transaction encoder provides helpers in encoding 0x Exchange transactions to allow
+  //   // a third party to submit the transaction. This operates in the context of the signer (taker)
+  //   // rather then the context of the submitter (sender)
+  //   const transactionEncoder = await this.contractWrappers.exchange.transactionEncoderAsync();
+  //   // This is an ABI encoded function call that the taker wishes to perform
+  //   // in this scenario it is a fillOrder
+  //   const fillData = transactionEncoder.fillOrderTx(signedOrder, takerAssetAmount);
+  //   // Generate a random salt to mitigate replay attacks
+  //   const takerTransactionSalt = generatePseudoRandomSalt();
+  //   // The taker signs the operation data (fillOrder) with the salt
+  //   const executeTransactionHex = transactionEncoder.getTransactionHex(fillData, takerTransactionSalt, taker);
+  //   const takerSignatureHex = await signatureUtils.ecSignHashAsync(this.web3ProviderEngine, executeTransactionHex, taker);
+  //   return takerSignatureHex;
+  // }
+
+  // async approve() {
+  //   const tokenAddress = '0x60697A2711fCd77bA434faF04588f9b20fc96A3c';
+  //   const [ownerAddress] = await this.web3Wrapper.getAvailableAddressesAsync();
+  //   return this.contractWrappers.erc20Token.setUnlimitedProxyAllowanceAsync(tokenAddress, ownerAddress)
+  // }
 }
