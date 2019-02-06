@@ -6,9 +6,9 @@
   "author": "atvanguard <93arpit@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "build": "tsc",
-    "server": "node dist/backend/server.js",
-    "server:dev": "node-dev dist/backend/server.js",
+    "build": "cd app && yarn build && cd .. && tsc && rm -rf dist/backend/build && cp -r app/build dist/backend",
+    "start": "node dist/backend/server.js",
+    "start:dev": "node-dev dist/backend/server.js",
     "truffle": "truffle",
     "tsc": "tsc"
   },

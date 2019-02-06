@@ -21,21 +21,21 @@ const getListError = error => ({
 });
 
 export const fetchProducts = () => {
-  const URL = '/listing';
+  const URL = '/public/listing';
 
   return async dispatch => {
 
     try {
       dispatch(getList())
       // Delete the below line on real server calls
-      setTimeout(() => {
-        dispatch(getListSuccess(data))
-      },5000);
+      // setTimeout(() => {
+      //   dispatch(getListSuccess(data))
+      // },5000);
       /**
        * Uncomment to send back real data
        */
-      // const res = await axios.get(URL);
-      // dispatch(getListSuccess(res.data));
+      const res = await axios.get(URL);
+      dispatch(getListSuccess(res.data));
 
     }catch (errors) {
       dispatch(getListError(errors));
