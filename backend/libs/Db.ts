@@ -72,4 +72,13 @@ export default class Db {
   addNewBid(bid: SignedOrder) {
     return this.db.collection('bids').insertOneAsync(bid)
   }
+
+  getBids() {
+    return new Promise((resolve, reject) => {
+      return this.db.collection('bids').find({}).toArray((err, result) => {
+        if (err) return reject(err);
+        resolve(result);
+      })
+    })
+  }
 }

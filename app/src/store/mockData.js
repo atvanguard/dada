@@ -5,6 +5,7 @@ export const ART_LIST = [
     "owner": "Artist",
     "caption": "The Face",
     "price": 20,
+    "ethAddress": "0x5409ed021d9299bf6814279a6a1411a7e866a631"
   },
   {
     "id": 2,

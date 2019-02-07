@@ -12,7 +12,8 @@ const initialState = {
     request: false,
     error: false,
   },
-  importArt: {}
+  importArt: {},
+  submitBid: {}
 };
 
 const store = createStore(

@@ -20,6 +20,16 @@ const rootReducer = (state, action) => {
         ...state,
         importArt: {success: true, loading: false}
       }
+    case LIST.SUBMIT_BID:
+    return {
+      ...state,
+      submitBid: {loading: true}
+    }
+    case LIST.SUBMIT_BID_SUCCESS:
+      return {
+        ...state,
+        submitBid: {success: true, loading: false}
+      }
     case LIST.LIST_SUCCESS:
       return {
         ...state,

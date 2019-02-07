@@ -132,7 +132,7 @@ function extractImageMetaData(media: any, ethAddress = '') {
 }
 
 function getEthAddressFromSignedMessage(sig) {
-  return '0x60697A2711fCd77bA434faF04588f9b20fc96A3c'
+  return '0x5409ED021D9299bf6814279A6A1411A7e866A631'
 }
 
 // appends user_id to req object

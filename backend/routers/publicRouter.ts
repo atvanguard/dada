@@ -11,8 +11,8 @@ export default router;
 router.get('/listing', async (req, res) => {
   try {
     const art: any = await db.getArtForSale();
-    console.log(art)
-    res.send(art.map(a => _.pick(a, ['id', 'caption', 'url', 'owner'])))
+    console.log('sending art', art)
+    res.send(art)
   } catch (e) {
     handleError(res, e)
   }
