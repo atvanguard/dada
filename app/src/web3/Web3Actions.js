@@ -38,6 +38,14 @@ class Web3Actions {
     return window.ethereum.enable();
   }
 
+  async signRandom() {
+    return signatureUtils.ecSignHashAsync(
+      new MetamaskSubprovider(window.web3.currentProvider),
+      '0xE36Ea790bc9d7AB70C55260C66D52b1eca985f84',
+      await this.getAvailableAddress()
+      )
+  }
+
   async getAvailableAddress() {
     const accounts = await this.web3Wrapper.getAvailableAddressesAsync();
     return accounts[0];
@@ -124,22 +132,29 @@ class Web3Actions {
     return signedOrder;
   }
 
-  // // intended to make it work like meta-tx
-  // async fulfillBid(signedOrder, taker, takerAssetAmount) {
-  //   // The transaction encoder provides helpers in encoding 0x Exchange transactions to allow
-  //   // a third party to submit the transaction. This operates in the context of the signer (taker)
-  //   // rather then the context of the submitter (sender)
-  //   const transactionEncoder = await this.contractWrappers.exchange.transactionEncoderAsync();
-  //   // This is an ABI encoded function call that the taker wishes to perform
-  //   // in this scenario it is a fillOrder
-  //   const fillData = transactionEncoder.fillOrderTx(signedOrder, takerAssetAmount);
-  //   // Generate a random salt to mitigate replay attacks
-  //   const takerTransactionSalt = generatePseudoRandomSalt();
-  //   // The taker signs the operation data (fillOrder) with the salt
-  //   const executeTransactionHex = transactionEncoder.getTransactionHex(fillData, takerTransactionSalt, taker);
-  //   const takerSignatureHex = await signatureUtils.ecSignHashAsync(this.web3ProviderEngine, executeTransactionHex, taker);
-  //   return takerSignatureHex;
-  // }
+  // intended to make it work like meta-tx
+  async fulfillBid(signedOrder, takerAssetAmount) {
+    const taker = await this.getAvailableAddress()
+    console.log('taker', taker)
+    // The transaction encoder provides helpers in encoding 0x Exchange transactions to allow
+    // a third party to submit the transaction. This operates in the context of the signer (taker)
+    // rather then the context of the submitter (sender)
+    // const transactionEncoder = await this.contractWrappers.exchange.transactionEncoderAsync();
+    // // This is an ABI encoded function call that the taker wishes to perform
+    // // in this scenario it is a fillOrder
+    // const fillData = transactionEncoder.fillOrderTx(signedOrder, takerAssetAmount);
+    // // Generate a random salt to mitigate replay attacks
+    // const takerTransactionSalt = generatePseudoRandomSalt();
+    // // The taker signs the operation data (fillOrder) with the salt
+    // const executeTransactionHex = transactionEncoder.getTransactionHex(fillData, takerTransactionSalt, taker);
+    // const takerSignatureHex = await signatureUtils.ecSignHashAsync(this.web3ProviderEngine, executeTransactionHex, taker);
+    // const t = await this.contractWrappers.exchange.validateFillOrderThrowIfInvalidAsync(signedOrder, takerAssetAmount, taker);
+    const txHash = await this.contractWrappers.exchange.fillOrderAsync(signedOrder, takerAssetAmount, taker, {
+      gasLimit: 400000,
+  });
+    console.log(txHash)
+    // return takerSignatureHex;
+  }
 }
 
 export default Web3Actions;

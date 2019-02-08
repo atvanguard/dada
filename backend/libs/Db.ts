@@ -73,7 +73,7 @@ export default class Db {
     return this.db.collection('bids').insertOneAsync(bid)
   }
 
-  getBids() {
+  getBids(): Promise<any[]> {
     return new Promise((resolve, reject) => {
       return this.db.collection('bids').find({}).toArray((err, result) => {
         if (err) return reject(err);

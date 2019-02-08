@@ -10,26 +10,6 @@ const rootReducer = (state, action) => {
           loading: true,
         }
       }
-    case LIST.IMPORT_ART:
-      return {
-        ...state,
-        importArt: {loading: true}
-      }
-    case LIST.IMPORT_ART_SUCCESS:
-      return {
-        ...state,
-        importArt: {success: true, loading: false}
-      }
-    case LIST.SUBMIT_BID:
-    return {
-      ...state,
-      submitBid: {loading: true}
-    }
-    case LIST.SUBMIT_BID_SUCCESS:
-      return {
-        ...state,
-        submitBid: {success: true, loading: false}
-      }
     case LIST.LIST_SUCCESS:
       return {
         ...state,
@@ -41,6 +21,36 @@ const rootReducer = (state, action) => {
           success: true,
       }
     }
+    case LIST.IMPORT_ART:
+      return {
+        ...state,
+        importArt: {loading: true}
+      }
+    case LIST.IMPORT_ART_SUCCESS:
+      return {
+        ...state,
+        importArt: {success: true, loading: false}
+      }
+      case LIST.GET_BID:
+      return {
+        ...state,
+        bids: {loading: true}
+      }
+    case LIST.GET_BID_SUCCESS:
+      return {
+        ...state,
+        bids: {loading: false, data: action.data}
+      }
+    case LIST.SUBMIT_BID:
+    return {
+      ...state,
+      submitBid: {loading: true}
+    }
+    case LIST.SUBMIT_BID_SUCCESS:
+      return {
+        ...state,
+        submitBid: {success: true, loading: false}
+      }
     case LIST.CREATOR_ART_LIST_SUCCESS:
       return {
         ...state,

@@ -13,7 +13,8 @@ const initialState = {
     error: false,
   },
   importArt: {},
-  submitBid: {}
+  submitBid: {},
+  bids: {}
 };
 
 const store = createStore(

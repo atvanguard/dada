@@ -3,16 +3,17 @@ import {
   importArt,
   importArtSuccess,
   submitBid,
-  submitBidSuccess
-} from './actionTypes';
+  submitBidSuccess,
+  getBids,
+  getBidsSuccess } from './actionTypes';
 import axios from 'axios';
 
 /**
  * List to be return instead of the one going to be returned by the server
  */
 import * as mockData from './mockData';
-const MODE = ''
-// const MODE = 'MOCK'
+let MODE = ''
+// MODE = 'MOCK'
 
 const getList = () => ({
   type: LIST.LIST_REQUEST
@@ -64,6 +65,25 @@ export const fetchCreatorArt = () => {
       } else {
         const res = await axios.get(URL);
         dispatch(getCreatorArtListSuccess(res.data));
+      }
+    } catch (errors) {
+      dispatch(getListError(errors));
+    }
+  }
+};
+
+export const fetchbids = () => {
+  const URL = '/v2/orderbook';
+  return async dispatch => {
+    try {
+      dispatch(getBids())
+      if (MODE === 'MOCK') {
+        setTimeout(() => {
+          dispatch(getBidsSuccess(mockData.bids))
+        }, 500);
+      } else {
+        const res = await axios.get(URL);
+        dispatch(getBidsSuccess(res.data));
       }
     } catch (errors) {
       dispatch(getListError(errors));

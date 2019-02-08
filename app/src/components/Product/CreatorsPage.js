@@ -12,6 +12,11 @@ import Loader from '../Loader';
 import { fetchCreatorArt, importCreatorArt } from '../../store/actions';
 
 import { productList } from './styles';
+import {
+  MetaMaskButton,
+} from 'rimble-ui'
+import Web3 from '../../web3/Web3Actions'
+import axios from 'axios';
 
 class CreatorsPage extends React.Component {
 
@@ -23,13 +28,19 @@ class CreatorsPage extends React.Component {
     loading: false,
     list: [],
   }
-
+  web3 = new Web3()
   componentDidMount() {
     this.props.fetchCreatorArt();
   }
 
   importArt() {
     this.props.importCreatorArt();
+  }
+
+  async onMetaMaskButtonClick() {
+    await this.web3.askForConnection();
+    await this.web3.signRandom();
+    axios.post('account/linkAddress')
   }
 
   render() {
@@ -48,8 +59,9 @@ class CreatorsPage extends React.Component {
           {list.map(item => (
               <ProductImage key={item.id} imgSource={item.url} alt={item.caption} {...item} />
           ))}
-        </Container>
+        <MetaMaskButton mb={3} onClick={() => this.onMetaMaskButtonClick.apply(this)}>Connect with MetaMask</MetaMaskButton>
         {artImporter}
+        </Container>
       </div>
     )
   }

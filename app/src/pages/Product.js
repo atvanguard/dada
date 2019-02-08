@@ -3,6 +3,7 @@ import React from 'react';
 import NavBar from '../components/Navigation';
 import ProductList from '../components/Product/ProductList';
 import CreatorsPage from '../components/Product/CreatorsPage';
+import Bids from '../components/Product/Bids';
 import {BrowserRouter as Router, Link, Route} from 'react-router-dom';
 
 const Product = () => (
@@ -16,6 +17,7 @@ const Product = () => (
       </NavBar>
       <Route exact={true} path="/" component={ProductList} />
       <Route path="/me" component={CreatorsPage} />
+      <Route path="/bids" component={Bids} />
     </React.Fragment>
   </Router>
 );

@@ -9,8 +9,8 @@ router.use(express.json());
 
 router.get('/orderbook', async (req, res) => {
   try {
-    await db.getBids()
-    res.send()
+    const bids = await db.getBids()
+    res.send(bids.map(b => b.bid.signature))
   } catch (e) {
     handleError(res, e);
   }
@@ -20,6 +20,7 @@ router.get('/orderbook', async (req, res) => {
 router.post('/order', async (req, res) => {
   const bid = req.body;
   // @todo validate bid schema
+  console.log(bid)
   try {
     await db.addNewBid(bid)
     res.send()
