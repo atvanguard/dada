@@ -36,7 +36,10 @@ class ProductBidDrawer extends React.Component {
             title,
             price,
             artist,
-            alt } = this.props;
+            alt,
+            id,
+            ethAddress
+          } = this.props;
     
     return(
       <Transition
@@ -67,7 +70,7 @@ class ProductBidDrawer extends React.Component {
                 price={price}
                 artist={artist}
               />
-              <Web3Widget />
+              <Web3Widget id={id} taker={ethAddress}/>
             </div>
           </animated.div>
         </Drawer>

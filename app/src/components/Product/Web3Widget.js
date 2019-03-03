@@ -1,12 +1,16 @@
 import React from 'react';
 import Web3 from '../../web3/Web3Actions'
-import withStyle from 'react-jss';
+import { connect } from 'react-redux'
+import bn from 'bn.js';
+import Loader from '../Loader';
+
+import { submitArtBid } from '../../store/actions';
 
 import {
   MetaMaskButton,
   PublicAddress,
-  Button
 } from 'rimble-ui'
+import { Button } from 'react-bootstrap';
 
 class Web3Widget extends React.Component {
 
@@ -18,7 +22,7 @@ class Web3Widget extends React.Component {
     this.onMetaMaskButtonClick = this.onMetaMaskButtonClick.bind(this);
     this.approveToken = this.approveToken.bind(this);
     this.handleChange = this.handleChange.bind(this);
-    this.placeBid = this.placeBid.bind(this);
+    // this.placeBid = this.placeBid.bind(this);
   }
 
   async onMetaMaskButtonClick() {
@@ -31,16 +35,13 @@ class Web3Widget extends React.Component {
     this.buildState()
   }
 
-  async placeBid() {
+  async placeBid(id, taker) {
     try {
-      const sig = await this.web3.createBid(
-        '0x6Ecbe1DB9EF729CBe972C83Fb886247691Fb6beb', // takerAddress
-        '0xabc', // tokenId,
-        this.state.value,
-        'ZRX'
-      )
-      console.log('sig', sig)
+      console.log(new bn(id), taker, this.state.value)
+      const bid = await this.web3.createBid(taker, new bn(id), this.state.value, 'ZRX')
+      console.log('bid', bid)
       // send to /v2/order
+      await this.props.submitArtBid(bid);
     } catch(e) {
       console.log(e)
     }
@@ -66,6 +67,13 @@ class Web3Widget extends React.Component {
 
   render() {
     const isMetaMaskConnected = this.state.isMetaMaskConnected;
+    const { id, taker } = this.props;
+    let placeBid = <Button onClick={this.placeBid.bind(this, id, taker)}>Place bid</Button>
+    if (this.props.placingBid) {
+      placeBid = <Loader />
+    } else if (this.props.placeBidSuccess) {
+      placeBid = <Button variant="success" disabled>Success</Button>
+    }
     return(
       <div>
         {isMetaMaskConnected ? (
@@ -82,7 +90,7 @@ class Web3Widget extends React.Component {
                   <input value={this.state.value} onChange={this.handleChange} type="text" class="form-control" id="bidValue" placeholder="99.76" />
                 </div>
               </div>
-              <Button onClick={this.placeBid}>Place bid</Button>
+              {placeBid}
             </form>
           </div>
         ) : (
@@ -93,4 +101,12 @@ class Web3Widget extends React.Component {
   }
 }
 
-export default Web3Widget;
+function mapStateToProps(state) {
+  console.log(state)
+  return ({
+    placingBid: state.submitBid.loading,
+    placeBidSuccess: state.submitBid.success
+  });
+}
+
+export default connect(mapStateToProps, {submitArtBid})(Web3Widget)

@@ -8,6 +8,7 @@ import { ReactComponent as Heart} from '../../assets/img/heart.svg'
 import { ReactComponent as Search} from '../../assets/img/search.svg';
 
 import { navBarLeft } from './styles';
+import {BrowserRouter as Router, Link, Route} from 'react-router-dom';
 
 const NavBarLeftItem = props => {
   const { classes } = props;
@@ -26,7 +27,8 @@ const NavBarLeftItem = props => {
       <Icon 
         className={classes.icon}
       >
-        <Hammer />
+      <Link to='/bids'>Bids</Link>
+      <Hammer />
       </Icon>
     </div>
   )

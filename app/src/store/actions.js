@@ -1,15 +1,19 @@
 import {
   LIST,
   importArt,
-  importArtSuccess
-} from './actionTypes';
+  importArtSuccess,
+  submitBid,
+  submitBidSuccess,
+  getBids,
+  getBidsSuccess } from './actionTypes';
 import axios from 'axios';
 
 /**
  * List to be return instead of the one going to be returned by the server
  */
 import * as mockData from './mockData';
-const MODE = 'MOCK'
+let MODE = ''
+// MODE = 'MOCK'
 
 const getList = () => ({
   type: LIST.LIST_REQUEST
@@ -68,6 +72,25 @@ export const fetchCreatorArt = () => {
   }
 };
 
+export const fetchbids = () => {
+  const URL = '/v2/orderbook';
+  return async dispatch => {
+    try {
+      dispatch(getBids())
+      if (MODE === 'MOCK') {
+        setTimeout(() => {
+          dispatch(getBidsSuccess(mockData.bids))
+        }, 500);
+      } else {
+        const res = await axios.get(URL);
+        dispatch(getBidsSuccess(res.data));
+      }
+    } catch (errors) {
+      dispatch(getListError(errors));
+    }
+  }
+};
+
 export const importCreatorArt = () => {
   const URL = '/account/import';
   return async dispatch => {
@@ -80,6 +103,25 @@ export const importCreatorArt = () => {
       } else {
         await axios.post(URL);
         dispatch(importArtSuccess());
+      }
+    } catch (errors) {
+      dispatch(getListError(errors));
+    }
+  }
+};
+
+export const submitArtBid = (bid) => {
+  const URL = '/v2/order';
+  return async dispatch => {
+    try {
+      dispatch(submitBid())
+      if (MODE === 'MOCK') {
+        setTimeout(() => {
+          dispatch(submitBidSuccess())
+        }, 500);
+      } else {
+        await axios.post(URL, {bid});
+        dispatch(submitBidSuccess());
       }
     } catch (errors) {
       dispatch(getListError(errors));

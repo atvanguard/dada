@@ -12,7 +12,9 @@ const initialState = {
     request: false,
     error: false,
   },
-  importArt: {}
+  importArt: {},
+  submitBid: {},
+  bids: {}
 };
 
 const store = createStore(
